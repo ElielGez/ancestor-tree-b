@@ -1,5 +1,6 @@
 #include "FamilyTree.hpp"
 #include <stdexcept>
+#define COUNT 10
 
 using namespace family;
 
@@ -12,15 +13,15 @@ void Node::setMother(Node *mother)
 {
     this->mother = mother;
 }
-void Node::setRelation(string gender)
+void Node::setRelation()
 {
     if (this->level == 1)
-        this->relation = gender;
+        this->relation = this->type;
     else if (this->level == 2)
-        this->relation = "grand" + gender;
+        this->relation = "grand" + this->type;
     else if (this->level > 2)
     {
-        string temp = "grand" + gender;
+        string temp = "grand" + this->type;
         for (int i = 0; i < this->level - 2; i++)
         {
             temp = "great-" + temp;
@@ -48,6 +49,10 @@ string Node::getRelation()
 {
     return this->relation;
 }
+string Node::getType()
+{
+    return this->type;
+}
 
 // Tree class
 
@@ -61,8 +66,8 @@ Tree &Tree::addFather(string child, string father)
     if (c->getFather() != NULL)
         throw runtime_error("Child already got father");
 
-    Node *f = new Node(father, c->getLevel() + 1);
-    f->setRelation("father");
+    Node *f = new Node(father, c->getLevel() + 1, "father");
+    f->setRelation();
     c->setFather(f);
     return *this;
 }
@@ -75,15 +80,14 @@ Tree &Tree::addMother(string child, string mother)
     if (c->getMother() != NULL)
         throw runtime_error("Child already got mother");
 
-    Node *m = new Node(mother, c->getLevel() + 1);
-    m->setRelation("mother");
+    Node *m = new Node(mother, c->getLevel() + 1, "mother");
+    m->setRelation();
     c->setMother(m);
     return *this;
 }
 void Tree::display()
 {
-    display(this->root);
-    cout << endl;
+    displayRec(this->root, 0);
 }
 void Tree::display(Node *r)
 {
@@ -92,6 +96,28 @@ void Tree::display(Node *r)
     cout << r->getName() << ":" << r->getLevel() << ":" << r->getRelation() << ",";
     display(r->getFather());
     display(r->getMother());
+}
+void Tree::displayRec(Node *root, int space)
+{
+    // Base case
+    if (root == NULL)
+        return;
+
+    // Increase distance between levels
+    space += COUNT;
+
+    // Process right child first
+    displayRec(root->getFather(), space);
+
+    // Print current node after space
+    // count
+    cout << endl;
+    for (int i = COUNT; i < space; i++)
+        cout << " ";
+    cout << root->getName() << "\n";
+
+    // Process left child
+    displayRec(root->getMother(), space);
 }
 
 string Tree::relation(string name)
@@ -120,11 +146,11 @@ void Tree::remove(string name)
         throw runtime_error("Child is the root , can't remove");
     }
     Node *children = findByParent(root, c->getName());
-    if (c->getRelation().find("father") != std::string::npos)
+    if (c->getType() == "father")
     {
         children->setFather(NULL);
     }
-    else if (c->getRelation().find("mother") != std::string::npos)
+    else if (c->getType() == "mother")
     {
         children->setMother(NULL);
     }
