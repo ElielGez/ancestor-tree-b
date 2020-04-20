@@ -93,7 +93,7 @@ void Tree::display(Node *r)
 {
     if (r == NULL)
         return;
-    cout << r->getName() << ":" << r->getLevel() << ":" << r->getRelation() << ",";
+    cout << r->getName() << ":" << r->getRelation() << ",";
     display(r->getFather());
     display(r->getMother());
 }
