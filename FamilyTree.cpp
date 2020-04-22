@@ -1,6 +1,5 @@
 #include "FamilyTree.hpp"
 #include <stdexcept>
-#define COUNT 10
 
 using namespace family;
 
