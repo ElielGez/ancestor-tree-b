@@ -74,13 +74,6 @@ Tree &Tree::addMother(string child, string mother) {
 void Tree::display() {
     display(this->root);
 }
-void Tree::display(Node *r) {
-    if (r == NULL)
-        return;
-    cout << r->getName() << ":" << r->getRelation() << ",";
-    display(r->getFather());
-    display(r->getMother());
-}
 
 string Tree::relation(string name) {
     Node *c = findChild(root, name, "name");
@@ -110,6 +103,16 @@ void Tree::remove(string name) {
     }
     remove(c);
 };
+
+// private
+void Tree::display(Node *r) {
+    if (r == NULL)
+        return;
+    cout << r->getName() << ":" << r->getRelation() << ",";
+    display(r->getFather());
+    display(r->getMother());
+}
+
 void Tree::remove(Node *r) {
     if (r == NULL)
         return;
