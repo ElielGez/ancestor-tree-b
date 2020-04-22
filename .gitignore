@@ -35,3 +35,6 @@ solution*
 *.app
 demo
 test
+
+main1.cpp
+Makefile1

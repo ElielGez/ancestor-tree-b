@@ -1,5 +1,12 @@
 #include <iostream>
 #include <string>
+#define DEBUG(msg) cout << "\033[1;31m"                                                                                \
+                        << "-DEBUG- File: " << __FILE__ << " Line: " << __LINE__ << " Message: " << msg << "\033[0m\n" \
+                        << endl;
+#define INFO(msg) cout << "\033[1;36m"                                                                               \
+                       << "-INFO- File: " << __FILE__ << " Line: " << __LINE__ << " Message: " << msg << "\033[0m\n" \
+                       << endl;
+
 using namespace std;
 namespace family {
 
@@ -30,12 +37,14 @@ private:
 
 public:
     Tree(string name) : root(new Node(name, 0, "root")){};
+    ~Tree() {
+        remove(root);
+    }
 
     Tree &addFather(string, string);
     Tree &addMother(string, string);
     void display();
     void display(Node *r);
-    void displayRec(Node *root, int space);
     string relation(string);
     string find(string);
     void remove(string);

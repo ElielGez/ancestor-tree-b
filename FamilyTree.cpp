@@ -73,7 +73,7 @@ Tree &Tree::addMother(string child, string mother) {
     return *this;
 }
 void Tree::display() {
-    displayRec(this->root, 0);
+    display(this->root);
 }
 void Tree::display(Node *r) {
     if (r == NULL)
@@ -81,27 +81,6 @@ void Tree::display(Node *r) {
     cout << r->getName() << ":" << r->getRelation() << ",";
     display(r->getFather());
     display(r->getMother());
-}
-void Tree::displayRec(Node *root, int space) {
-    // Base case
-    if (root == NULL)
-        return;
-
-    // Increase distance between levels
-    space += COUNT;
-
-    // Process right child first
-    displayRec(root->getFather(), space);
-
-    // Print current node after space
-    // count
-    cout << endl;
-    for (int i = COUNT; i < space; i++)
-        cout << " ";
-    cout << root->getName() << "\n";
-
-    // Process left child
-    displayRec(root->getMother(), space);
 }
 
 string Tree::relation(string name) {
@@ -133,13 +112,13 @@ void Tree::remove(string name) {
     remove(c);
 };
 void Tree::remove(Node *r) {
-    if (r->getFather() != NULL)
-        remove(r->getFather());
-    if (r->getMother() != NULL)
-        remove(r->getMother());
-    else if (r != NULL) {
-        delete r;
-    }
+    if (r == NULL)
+        return;
+
+    remove(r->getFather());
+    remove(r->getMother());
+
+    delete r;
 }
 
 Node *Tree::findChild(Node *root, string child, string searchType) {
