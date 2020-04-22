@@ -1,12 +1,11 @@
-#include "doctest.h"
 #include "FamilyTree.hpp"
+#include "doctest.h"
 using namespace family;
 
 #include <string>
 using namespace std;
 
-TEST_CASE("Test add father")
-{
+TEST_CASE("Test add father") {
     Tree T("Lee");
     T.addFather("Lee", "Ron");
     T.addFather("Ron", "Yosef");
@@ -23,8 +22,7 @@ TEST_CASE("Test add father")
     CHECK_THROWS_AS(T.addFather("Lee", "Omri"), std::exception);
 };
 
-TEST_CASE("Test add father")
-{
+TEST_CASE("Test add father") {
     Tree T("Liron");
     T.addFather("Liron", "Moshe");
     T.addFather("Moshe", "Yosef");
@@ -41,8 +39,7 @@ TEST_CASE("Test add father")
     CHECK_THROWS_AS(T.addFather("Liron", "Omri"), std::exception);
 };
 
-TEST_CASE("Test add father")
-{
+TEST_CASE("Test add father") {
     Tree T("Noffar");
     T.addFather("Noffar", "Israel");
     T.addFather("Israel", "Dovi");
@@ -63,8 +60,7 @@ TEST_CASE("Test add father")
     CHECK_THROWS_AS(T.addFather("Noffar", "Omri"), std::exception);
 };
 
-TEST_CASE("Test add mother")
-{
+TEST_CASE("Test add mother") {
     Tree T("Lee");
     T.addMother("Lee", "Yahalomit");
     T.addMother("Yahalomit", "Yehudit");
@@ -80,8 +76,7 @@ TEST_CASE("Test add mother")
     CHECK_THROWS_AS(T.addMother("Lee", "Hadar"), std::exception);
     CHECK_THROWS_AS(T.addMother("Lee", "Noa"), std::exception);
 };
-TEST_CASE("Test add mother")
-{
+TEST_CASE("Test add mother") {
     Tree T("Liron");
     T.addMother("Liron", "Miri");
     T.addMother("Miri", "Moran");
@@ -98,8 +93,7 @@ TEST_CASE("Test add mother")
     CHECK_THROWS_AS(T.addMother("Liron", "Noa"), std::exception);
 };
 
-TEST_CASE("Test relation")
-{
+TEST_CASE("Test relation") {
     Tree T("Lee");
     T.addFather("Lee", "Ron");
     T.addFather("Ron", "Yosef");
@@ -120,8 +114,7 @@ TEST_CASE("Test relation")
     CHECK(T.relation("Hadar") == string("unrelated"));
     CHECK(T.relation("Yael") == string("unrelated"));
 };
-TEST_CASE("Test relation")
-{
+TEST_CASE("Test relation") {
     Tree T("Liron");
     T.addMother("Liron", "Miri");
     T.addMother("Miri", "Moran");
@@ -137,8 +130,7 @@ TEST_CASE("Test relation")
     CHECK(T.relation("Yakov") == string("great-grandfather"));
 };
 
-TEST_CASE("Test find")
-{
+TEST_CASE("Test find") {
     Tree T("Lee");
     T.addFather("Lee", "Ron");
     T.addFather("Ron", "Yosef");
@@ -159,8 +151,7 @@ TEST_CASE("Test find")
     CHECK_THROWS_AS(T.find(""), std::exception);
 };
 
-TEST_CASE("Test find")
-{
+TEST_CASE("Test find") {
     Tree T("Liron");
     T.addFather("Liron", "Omer");
     T.addFather("Omer", "Yosef");
@@ -181,8 +172,7 @@ TEST_CASE("Test find")
     CHECK_THROWS_AS(T.find(""), std::exception);
 };
 
-TEST_CASE("Test remove")
-{
+TEST_CASE("Test remove") {
     Tree T("Lee");
     T.addFather("Lee", "Ron");
     T.remove("Ron");

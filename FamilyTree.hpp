@@ -1,11 +1,9 @@
 #include <iostream>
 #include <string>
 using namespace std;
-namespace family
-{
+namespace family {
 
-class Node
-{
+class Node {
 private:
     string name;
     Node *father;
@@ -26,8 +24,7 @@ public:
     string getRelation();
     string getType();
 };
-class Tree
-{
+class Tree {
 private:
     Node *root;
 

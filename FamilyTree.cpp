@@ -5,60 +5,48 @@
 using namespace family;
 
 // Node class
-void Node::setFather(Node *father)
-{
+void Node::setFather(Node *father) {
     this->father = father;
 }
-void Node::setMother(Node *mother)
-{
+void Node::setMother(Node *mother) {
     this->mother = mother;
 }
-void Node::setRelation()
-{
+void Node::setRelation() {
     if (this->level == 1)
         this->relation = this->type;
     else if (this->level == 2)
         this->relation = "grand" + this->type;
-    else if (this->level > 2)
-    {
+    else if (this->level > 2) {
         string temp = "grand" + this->type;
-        for (int i = 0; i < this->level - 2; i++)
-        {
+        for (int i = 0; i < this->level - 2; i++) {
             temp = "great-" + temp;
         }
         this->relation = temp;
     }
 }
-Node *Node::getFather()
-{
+Node *Node::getFather() {
     return this->father;
 }
-Node *Node::getMother()
-{
+Node *Node::getMother() {
     return this->mother;
 }
-int Node::getLevel()
-{
+int Node::getLevel() {
     return this->level;
 }
-string Node::getName()
-{
+string Node::getName() {
     return this->name;
 }
-string Node::getRelation()
-{
+string Node::getRelation() {
     return this->relation;
 }
-string Node::getType()
-{
+string Node::getType() {
     return this->type;
 }
 
 // Tree class
 
 //public
-Tree &Tree::addFather(string child, string father)
-{
+Tree &Tree::addFather(string child, string father) {
     Node *c = findChild(root, child, "name");
     if (c == NULL)
         throw runtime_error("Child was not found");
@@ -71,8 +59,7 @@ Tree &Tree::addFather(string child, string father)
     c->setFather(f);
     return *this;
 }
-Tree &Tree::addMother(string child, string mother)
-{
+Tree &Tree::addMother(string child, string mother) {
     Node *c = findChild(root, child, "name");
     if (c == NULL)
         throw runtime_error("Child was not found");
@@ -85,20 +72,17 @@ Tree &Tree::addMother(string child, string mother)
     c->setMother(m);
     return *this;
 }
-void Tree::display()
-{
+void Tree::display() {
     displayRec(this->root, 0);
 }
-void Tree::display(Node *r)
-{
+void Tree::display(Node *r) {
     if (r == NULL)
         return;
     cout << r->getName() << ":" << r->getRelation() << ",";
     display(r->getFather());
     display(r->getMother());
 }
-void Tree::displayRec(Node *root, int space)
-{
+void Tree::displayRec(Node *root, int space) {
     // Base case
     if (root == NULL)
         return;
@@ -120,56 +104,45 @@ void Tree::displayRec(Node *root, int space)
     displayRec(root->getMother(), space);
 }
 
-string Tree::relation(string name)
-{
+string Tree::relation(string name) {
     Node *c = findChild(root, name, "name");
     if (c == NULL)
         return "unrelated";
     return c->getRelation();
 }
-string Tree::find(string relation)
-{
+string Tree::find(string relation) {
     Node *c = findChild(root, relation, "relation");
     if (c == NULL)
         throw runtime_error("Child was not found");
     return c->getName();
 }
-void Tree::remove(string name)
-{
+void Tree::remove(string name) {
     Node *c = findChild(root, name, "name");
-    if (c == NULL)
-    {
+    if (c == NULL) {
         throw runtime_error("Child was not found");
     }
-    if (c->getLevel() == 0)
-    {
+    if (c->getLevel() == 0) {
         throw runtime_error("Child is the root , can't remove");
     }
     Node *children = findByParent(root, c->getName());
-    if (c->getType() == "father")
-    {
+    if (c->getType() == "father") {
         children->setFather(NULL);
-    }
-    else if (c->getType() == "mother")
-    {
+    } else if (c->getType() == "mother") {
         children->setMother(NULL);
     }
     remove(c);
 };
-void Tree::remove(Node *r)
-{
+void Tree::remove(Node *r) {
     if (r->getFather() != NULL)
         remove(r->getFather());
     if (r->getMother() != NULL)
         remove(r->getMother());
-    else if (r != NULL)
-    {
+    else if (r != NULL) {
         delete r;
     }
 }
 
-Node *Tree::findChild(Node *root, string child, string searchType)
-{
+Node *Tree::findChild(Node *root, string child, string searchType) {
     if (root == NULL)
         return NULL;
 
@@ -183,8 +156,7 @@ Node *Tree::findChild(Node *root, string child, string searchType)
     return findChild(root->getFather(), child, searchType) ?: findChild(root->getMother(), child, searchType);
 }
 
-Node *Tree::findByParent(Node *root, string child)
-{
+Node *Tree::findByParent(Node *root, string child) {
     if (root == NULL)
         return NULL;
 
