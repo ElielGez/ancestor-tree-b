@@ -10,18 +10,20 @@ TEST_CASE("Test add father") {
     T.addFather("Lee", "Ron");
     T.addFather("Ron", "Yosef");
     T.addFather("Yosef", "Daniel");
-    CHECK(T.relation("Ron") == string("father"));
-    CHECK(T.find("father") == string("Ron"));
-    CHECK(T.relation("David") == string("unrelated"));
-    CHECK_THROWS_AS(T.addFather("Lee", "David"), std::exception);
-    CHECK(T.relation("Yosef") == string("grandfather"));
-    CHECK(T.relation("Daniel") == string("great-grandfather"));
-    CHECK(T.relation("") == string("unrelated"));
-    CHECK_THROWS_AS(T.addFather("Lee", "David"), std::exception);
-    CHECK_THROWS_AS(T.addFather("Lee", "Alon"), std::exception);
-    CHECK_THROWS_AS(T.addFather("Lee", "Omri"), std::exception);
+    CHECK(T.relation("Ron") == string("father"));                 //normal check
+    CHECK(T.find("father") == string("Ron"));                     //normal check
+    CHECK(T.relation("David") == string("unrelated"));            //normal check
+    CHECK_THROWS_AS(T.addFather("Lee", "David"), std::exception); // already got father
+    CHECK(T.relation("Yosef") == string("grandfather"));          //normal check
+    CHECK(T.relation("Daniel") == string("great-grandfather"));   //normal check
+
+    CHECK(T.relation("") == string("unrelated"));                 //check relation on empty string
+    CHECK_THROWS_AS(T.addFather("Lee", "David"), std::exception); //already got father
+    CHECK_THROWS_AS(T.addFather("Lee", "Alon"), std::exception);  //already got father
+    CHECK_THROWS_AS(T.addFather("Lee", "Omri"), std::exception);  //already got father
 };
 
+//same as test case above with different tree
 TEST_CASE("Test add father") {
     Tree T("Liron");
     T.addFather("Liron", "Moshe");
@@ -39,6 +41,7 @@ TEST_CASE("Test add father") {
     CHECK_THROWS_AS(T.addFather("Liron", "Omri"), std::exception);
 };
 
+//same as test case above with different tree
 TEST_CASE("Test add father") {
     Tree T("Noffar");
     T.addFather("Noffar", "Israel");
@@ -65,17 +68,19 @@ TEST_CASE("Test add mother") {
     T.addMother("Lee", "Yahalomit");
     T.addMother("Yahalomit", "Yehudit");
     T.addMother("Yehudit", "Sigal");
-    CHECK(T.relation("Yahalomit") == string("mother"));
-    CHECK(T.find("mother") == string("Yahalomit"));
-    CHECK(T.relation("Michal") == string("unrelated"));
-    CHECK_THROWS_AS(T.addMother("Lee", "Noa"), std::exception);
-    CHECK(T.relation("Yehudit") == string("grandmother"));
-    CHECK(T.relation("Sigal") == string("great-grandmother"));
-    CHECK(T.relation("") == string("unrelated"));
-    CHECK_THROWS_AS(T.addMother("Lee", "Rotem"), std::exception);
-    CHECK_THROWS_AS(T.addMother("Lee", "Hadar"), std::exception);
-    CHECK_THROWS_AS(T.addMother("Lee", "Noa"), std::exception);
+    CHECK(T.relation("Yahalomit") == string("mother"));           //normal check
+    CHECK(T.find("mother") == string("Yahalomit"));               // normal check
+    CHECK(T.relation("Michal") == string("unrelated"));           //normal check
+    CHECK_THROWS_AS(T.addMother("Lee", "Noa"), std::exception);   // already got mother
+    CHECK(T.relation("Yehudit") == string("grandmother"));        //normal check
+    CHECK(T.relation("Sigal") == string("great-grandmother"));    // normal check
+    CHECK(T.relation("") == string("unrelated"));                 //check relation on empty string
+    CHECK_THROWS_AS(T.addMother("Lee", "Rotem"), std::exception); //already got mother
+    CHECK_THROWS_AS(T.addMother("Lee", "Hadar"), std::exception); //already got mother
+    CHECK_THROWS_AS(T.addMother("Lee", "Noa"), std::exception);   //already got mother
 };
+
+//same as test case above with different tree
 TEST_CASE("Test add mother") {
     Tree T("Liron");
     T.addMother("Liron", "Miri");
@@ -101,19 +106,20 @@ TEST_CASE("Test relation") {
     T.addMother("Lee", "Yahalomit");
     T.addMother("Yahalomit", "Yehudit");
     T.addMother("Yehudit", "Sigal");
-    CHECK(T.relation("Ron") == string("father"));
-    CHECK(T.relation("Yahalomit") == string("mother"));
-    CHECK(T.relation("Michal") == string("unrelated"));
-    CHECK(T.relation("Yehudit") == string("grandmother"));
-    CHECK(T.relation("Sigal") == string("great-grandmother"));
-    CHECK(T.relation("David") == string("unrelated"));
-    CHECK(T.relation("Yosef") == string("grandfather"));
+    CHECK(T.relation("Ron") == string("father"));              //normal check
+    CHECK(T.relation("Yahalomit") == string("mother"));        //normal check
+    CHECK(T.relation("Michal") == string("unrelated"));        //normal check
+    CHECK(T.relation("Yehudit") == string("grandmother"));     //normal check
+    CHECK(T.relation("Sigal") == string("great-grandmother")); //normal check
+    CHECK(T.relation("David") == string("unrelated"));         //normal check doesn't exist
+    CHECK(T.relation("Yosef") == string("grandfather"));       //normal check
     CHECK(T.relation("Daniel") == string("great-grandfather"));
-    CHECK(T.relation("") == string("unrelated"));
+    CHECK(T.relation("") == string("unrelated")); //check relation on empty string
     CHECK(T.relation("Alon") == string("unrelated"));
     CHECK(T.relation("Hadar") == string("unrelated"));
     CHECK(T.relation("Yael") == string("unrelated"));
 };
+
 TEST_CASE("Test relation") {
     Tree T("Liron");
     T.addMother("Liron", "Miri");
@@ -138,16 +144,16 @@ TEST_CASE("Test find") {
     T.addMother("Lee", "Yahalomit");
     T.addMother("Yahalomit", "Yehudit");
     T.addMother("Yehudit", "Sigal");
-    CHECK(T.find("mother") == string("Yahalomit"));
+    CHECK(T.find("mother") == string("Yahalomit")); //normal check
     CHECK(T.find("grandmother") == string("Yehudit"));
     CHECK(T.find("great-grandmother") == string("Sigal"));
     CHECK(T.find("father") == string("Ron"));
     CHECK(T.find("grandfather") == string("Yosef"));
     CHECK(T.find("great-grandfather") == string("Daniel"));
-    CHECK_THROWS_AS(T.find("uncle"), std::exception);
-    CHECK_THROWS_AS(T.find("cousin"), std::exception);
-    CHECK_THROWS_AS(T.find("nephew"), std::exception);
-    CHECK_THROWS_AS(T.find("niece"), std::exception);
+    CHECK_THROWS_AS(T.find("uncle"), std::exception);  //check on relation that doesn't exist
+    CHECK_THROWS_AS(T.find("cousin"), std::exception); //check on relation that doesn't exist
+    CHECK_THROWS_AS(T.find("nephew"), std::exception); //check on relation that doesn't exist
+    CHECK_THROWS_AS(T.find("niece"), std::exception);  //check on relation that doesn't exist
     CHECK_THROWS_AS(T.find(""), std::exception);
 };
 
@@ -175,27 +181,29 @@ TEST_CASE("Test find") {
 TEST_CASE("Test remove") {
     Tree T("Lee");
     T.addFather("Lee", "Ron");
-    T.remove("Ron");
-    CHECK_THROWS_AS(T.find("father"), std::exception);
+    T.remove("Ron");                                   // good remove
+    CHECK_THROWS_AS(T.find("father"), std::exception); // there is not father , I deleted him now (above)
     T.addFather("Lee", "Ron");
     T.addFather("Ron", "Daniel");
-    T.remove("Daniel");
-    T.remove("Ron");
-    CHECK_THROWS_AS(T.find("great-grandfather"), std::exception);
-    CHECK_THROWS_AS(T.find("grandfather"), std::exception);
-    CHECK_THROWS_AS(T.find("father"), std::exception);
+    T.remove("Daniel");                                           // first remove daniel the grandfather
+    T.remove("Ron");                                              //then remove the father , see that the remove of Daniel doesn't effect on Ron (no error)
+    CHECK_THROWS_AS(T.find("great-grandfather"), std::exception); // there is no great-grandfather , error
+    CHECK_THROWS_AS(T.find("grandfather"), std::exception);       // there is no grandfather , just remove him
+    CHECK_THROWS_AS(T.find("father"), std::exception);            // there is no father , just remove him
 
+    //same check as above , but this time on the mother
     T.addMother("Lee", "Yael");
     T.remove("Yael");
     CHECK_THROWS_AS(T.find("mother"), std::exception);
     T.addMother("Lee", "Yael");
     T.addMother("Yael", "Noa");
-    T.remove("Yael");
-    CHECK_THROWS_AS(T.remove("Noa"), std::exception);
-    CHECK_THROWS_AS(T.find("great-grandmother"), std::exception);
-    CHECK_THROWS_AS(T.find("grandmother"), std::exception);
-    CHECK_THROWS_AS(T.find("mother"), std::exception);
-    CHECK_THROWS_AS(T.remove(""), std::exception);
-    CHECK_THROWS_AS(T.remove("blabla"), std::exception);
-    CHECK_THROWS_AS(T.remove("test"), std::exception);
+    T.remove("Yael");                                             // this time remove the mother Yael
+    CHECK_THROWS_AS(T.remove("Noa"), std::exception);             //and then try to remove Noa , but it's error , because Noa removed with Yael remove
+    CHECK_THROWS_AS(T.find("great-grandmother"), std::exception); // there is no great-grandmother, error
+    CHECK_THROWS_AS(T.find("grandmother"), std::exception);       // there is no grandmother , just remove her
+    CHECK_THROWS_AS(T.find("mother"), std::exception);            // there is no mother , just remove her
+
+    CHECK_THROWS_AS(T.remove(""), std::exception);       // error try to remove unexisted node
+    CHECK_THROWS_AS(T.remove("blabla"), std::exception); // error try to remove unexisted node
+    CHECK_THROWS_AS(T.remove("test"), std::exception);   // error try to remove unexisted node
 };

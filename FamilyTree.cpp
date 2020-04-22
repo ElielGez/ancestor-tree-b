@@ -132,7 +132,14 @@ Node *Tree::findChild(Node *root, string child, string searchType) {
     if (field == child)
         return root;
 
-    return findChild(root->getFather(), child, searchType) ?: findChild(root->getMother(), child, searchType);
+    Node *father = findChild(root->getFather(), child, searchType);
+
+    if (father != NULL) {
+        return father;
+    }
+
+    return findChild(root->getMother(), child, searchType);
+    // return findChild(root->getFather(), child, searchType) ?: findChild(root->getMother(), child, searchType);
 }
 
 Node *Tree::findByParent(Node *root, string child) {
@@ -145,5 +152,12 @@ Node *Tree::findByParent(Node *root, string child) {
     else if (root->getMother() != NULL && root->getMother()->getName() == child)
         return root;
 
-    return findByParent(root->getFather(), child) ?: findByParent(root->getMother(), child);
+    Node *father = findByParent(root->getFather(), child);
+
+    if (father != NULL) {
+        return father;
+    }
+
+    return findByParent(root->getMother(), child);
+    // return findByParent(root->getFather(), child) ?: findByParent(root->getMother(), child);
 }
